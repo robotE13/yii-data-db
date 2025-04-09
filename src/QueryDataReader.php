@@ -192,14 +192,11 @@ class QueryDataReader implements QueryDataReaderInterface
     }
 
     /**
-     * @inheritDoc
      * @todo возможно вообще из интерфейса будет выпилен yiisoft
      */
     public function withFilterHandlers(FilterHandlerInterface ...$filterHandlers): static
     {
-        $new = clone $this;
-        $new->filterHandler->withFilterHandlers(...$filterHandlers);
-        return $new;
+        return $this->withAddedFilterHandlers(...$filterHandlers);
     }
 
     /**
