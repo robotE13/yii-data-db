@@ -18,21 +18,10 @@ final class AnyFilterHandler implements QueryFilterHandlerInterface
     {
         /** @var Any $filter */
 
-        $filters = $filter->getFilters();
-        if (empty($filters)) {
-            return null;
-        }
-
-        $condition = ['OR'];
+        $criteria = $filter->toCriteriaArray();
+        $condition = [$criteria[0], ...$criteria[1]];
         $params = [];
 
-        foreach ($filters as $subFilter) {
-            $criteria = $context->handleFilter($subFilter);
-            if ($criteria !== null) {
-                $condition[] = $criteria->condition;
-                $params = array_merge($params, $criteria->params);
-            }
-        }
         return new Criteria($condition, $params);
     }
 }
