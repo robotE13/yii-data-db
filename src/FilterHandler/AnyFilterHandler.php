@@ -17,9 +17,14 @@ final class AnyFilterHandler implements QueryFilterHandlerInterface
     public function getCriteria(FilterInterface $filter, Context $context): ?Criteria
     {
         /** @var Any $filter */
-
         $criteria = $filter->toCriteriaArray();
-        $condition = [$criteria[0], ...$criteria[1]];
+        $condition = [
+            $criteria[0],
+            ...array_filter(
+                $criteria[1],
+                fn (array $operand) => !empty($operand[2])
+            )
+        ];
         $params = [];
 
         return new Criteria($condition, $params);
